@@ -1,13 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const EmployeeList = ({ state, setState }) => {
+const EmployeeList = ({ state, dispatch }) => {
   const { empTable } = state;
   const handleClick = (id) => {
-    console.log("id", id)
-    setState(prev => (
-      { ...prev, selectedId: id }
-    ))
+    dispatch({type:"select", payload:id})
   }
   return (
     <ListBox>

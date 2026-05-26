@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import EmployeeList from '../no2_components/employee/EmployeeList'
 import EmployeeTable from '../no2_components/employee/EmployeeTable'
 import EmployeeRegister from '../no2_components/employee/EmployeeRegister'
@@ -20,54 +20,96 @@ const initialState = {
   mode: "",
   selectedId: ""
 }
+
+const reducer = (state, action) => {
+  switch(action.type){
+    case "select":  // selectedId가 state
+      return{
+        ...state,
+        selectedId: action.payload // Id
+      }
+    case "set_emp": // emp(initialEmp)에다가 수정
+      return{
+        ...state,
+        emp: action.payload
+      }
+    case "register":
+      return{
+        ...state,
+        empTable:[
+          ...state.empTable,
+          {
+            ...action.payload.emp,
+            id: action.payload.newId
+          }
+        ]
+      }
+      case "update":
+        return{
+          ...state,
+          empTable: state.empTable.map(item=>
+            item.id === state.selectedId ?
+            action.payload : item
+          )
+        }
+      case "delete":
+        return{
+          ...state,
+          empTable: state.empTable.filter(item=>
+            item.id !==state.selectedId
+          )
+        }
+      case "mode":
+        return{
+          ...state,
+          mode:action.payload
+        }
+      default:
+        return state;
+  }
+}
+
 const EmployeePage = () => {
-  const [state, setState] = useState(initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
   const { selectedId, empTable, emp, mode } = state;
   useEffect(() => {
-    selectedId &&
-      setState(prev => (
-        { ...prev, emp: empTable.filter(item => item.id === selectedId)[0] }
-      ))
+    selectedId&&
+      dispatch({type:"set_emp", payload:emp})
+  
   }, [selectedId, empTable])
   const handleDelete = () => {
     if (!selectedId) {
       alert("삭제할 데이터를 선택하세요.");
       return;
     }
-    setState(prev => (
-      {
-        ...prev, empTable: prev.empTable.filter(item => item.id !== selectedId),
-        emp: initialEmp,
-        selectedId: ""
-      }
-    ))
+    dispatch({type:"delete"})    
   }
   return (
     <Container>
       <Title>Employee Management</Title>
 
       <ContentBox>
-        <EmployeeList state={state} setState={setState} />
+        <EmployeeList state={state} dispatch={dispatch} />
         <EmployeeTable state={state} />
 
         <ButtonBox>
-          <ActionButton onClick={() => setState(prev => ({ ...prev, mode: "register" }))}>
+          <ActionButton onClick={() => dispatch({type:"mode",payload:"register"})}>
             등록
           </ActionButton>
 
-          <ActionButton onClick={() => setState(prev => ({ ...prev, mode: "update" }))}>
+          <ActionButton onClick={() => dispatch({type:"mode",payload:"update"})}>
             수정
           </ActionButton>
 
-          <DeleteButton onClick={() => setState(prev => ({ ...prev, mode: "delete" }))}>
+          <DeleteButton onClick={() => dispatch({type:"mode",payload:"delete"})}>
             삭제
           </DeleteButton>
         </ButtonBox>
 
         <FormBox>
           {
-            mode === "register" ? <EmployeeRegister setState={setState} />
-              : mode === "update" ? <EmployeeUpdate emp={emp} setState={setState} />
+            mode === "register" ? <EmployeeRegister dispatch={dispatch} />
+              : mode === "update" ? <EmployeeUpdate emp={emp} dispatch={dispatch} />
                 : mode === "delete" ? <ConfirmButton onClick={handleDelete}>위 데이터를 삭제하시겠습니까?</ConfirmButton>
                   : null
           }

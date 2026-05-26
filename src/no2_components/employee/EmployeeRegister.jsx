@@ -33,7 +33,7 @@ const reducer = (state, action)=>{
   }
 }
 
-const EmployeeRegister = ({ setState }) => {
+const EmployeeRegister = ({ dispatch }) => {
   const [emp, setEmp] = useState(initialEmp)
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -42,17 +42,7 @@ const EmployeeRegister = ({ setState }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     const dateId= Date.now()
-    emp &&
-    setState(prev => (
-      {
-        ...prev, empTable: [...prev.empTable, {
-          ...emp, id: dateId
-        }]        
-      }
-    ))
-    setState(prev=>({
-      ...prev,selectedId:dateId //selectedId:prev.empTable[prev.empTable.length-1]
-    }))
+    dispatch({type:"register",payload:{newId:dateId, emp}})
     setEmp(initialEmp)
   }
 

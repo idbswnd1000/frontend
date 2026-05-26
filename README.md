@@ -14,3 +14,10 @@ node_moduels 다시 설치 : npm install
 server 띄우기 : npm run dev
 router : npm install react-router-dom
 CSS(style) : npm install styled-components
+
+reducer
+dispatch : 함수를 실행하는 함수
+action : 전체 object 인수
+action.type: 함수의 타입
+action.payload: state를 변화시킬 수 있는 인수
+
