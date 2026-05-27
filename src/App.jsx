@@ -12,6 +12,7 @@ import LoginPage from './no1_pages/user/LoginPage'
 import RegistePage from './no1_pages/user/RegistePage'
 import EmployeeProvider from './no0_context/EmployeeContext.jsx';
 import UserProvider from './no0_context/UserContext.jsx';
+import TodoProvider from './no0_context/TodoContext.jsx'
 
 function App() {
   return (
@@ -26,7 +27,10 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegistePage />} />
                 <Route path="/" element={<HomePage />} />
-                <Route path="/todo" element={<TodoPage />} />
+                <Route path="/todo" element={
+                  <TodoProvider>
+                    <TodoPage />
+                  </TodoProvider>} />
                 <Route path="/employee" element={
                   <EmployeeProvider>
                     <EmployeePage />
