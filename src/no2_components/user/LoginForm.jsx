@@ -1,39 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { UserContext } from '../../no0_context/UserContext'
 
 const initialState = {
   username: "", password: ""
 }
 
-const LoginForm = ({ users, setLoginMode }) => {
+const LoginForm = () => {
   const [user, setUser] = useState(initialState)
-  const navi=useNavigate();
+  const { state, dispatch } = useContext(UserContext)
+  const navi = useNavigate();
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setUser(prev => (
-      { ...prev, [name]: value }
-    )
-    )
+    setUser(prev => ({ ...prev, [name]: value }))
   }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const loginUser = users.filter(item => {
-      return item.username === user.username
-        && item.password === user.password
+    const loginUser = state.users.filter(item => {
+      return item.username === user.username && item.password === user.password
     })[0]
+
     if (loginUser) {
       alert("성공")
-      setLoginMode(prev => (
-
-        { ...prev, isLogin: true, username: loginUser.username }))
-        navi("/")
+      dispatch({type:"login", payload:loginUser})
+      navi("/")
     } else {
       alert("사용자가 아닙니다.")
     }
   }
-  return (
 
+  return (
     <Form onSubmit={handleSubmit}>
       <Title>로그인</Title>
       <Card>
@@ -56,10 +55,9 @@ const LoginForm = ({ users, setLoginMode }) => {
       </Card>
       <Card>
         <LoginButton>로그인</LoginButton>
-        <RegisteButton onClick={()=>navi("/register")}>아직 회원이 아니신가요? 회원가입</RegisteButton>
+        <RegisteButton type="button" onClick={()=>navi("/register")}>아직 회원이 아니신가요? 회원가입</RegisteButton>
       </Card>
     </Form>
-
   )
 }
 
@@ -68,33 +66,27 @@ export default LoginForm
 const Form = styled.form`
   width: 100%;
   height: 100vh;
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   background: #f1f5f9;
 `
-
 const Title = styled.h2`
   text-align: center;
   margin-bottom: 32px;
   color: #1e393d;
   font-size: 24px;
 `
-
 const Card = styled.div`
   width: 400px;
   background: white;
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-
   display: flex;
   flex-direction: column;
 `
-
 const Input = styled.input`
   width:  100%;
   padding: 14px 16px;
@@ -102,7 +94,6 @@ const Input = styled.input`
   border: 1px solid #dbe4ee;
   font-size: 16px;
   outline: none;
-
   transition: 0.2s;
   &:focus{
     border-color: #3b82f6;
@@ -119,20 +110,16 @@ const BaseButton = styled.button`
   cursor: pointer;
   transition: 0.2s;
 `
-
 const LoginButton = styled(BaseButton)`
   background: #3b82f6;
   color: white;
-
   &:hover{
     background: #2563eb;
   }
 `
-
 const RegisteButton = styled(BaseButton)`
   background: transparent;
-  color: #3b82f6
-
+  color: #3b82f6;
   &:hover{
     background: #eff6ff;
   }

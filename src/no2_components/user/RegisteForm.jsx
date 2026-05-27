@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { UserContext } from '../../no0_context/UserContext'
 
 const initialState = {
     id: "",
@@ -9,8 +10,9 @@ const initialState = {
     confirmPassword: ""
 }
 
-const RegisteForm = ({ setUsers }) => {
+const RegisteForm = () => {
     const [user, setUser] = useState(initialState)
+    const { dispatch } = useContext(UserContext)
     const navi = useNavigate()
 
     const handleChange = (event) => {
@@ -26,14 +28,10 @@ const RegisteForm = ({ setUsers }) => {
             return
         }
 
-        setUsers(prev => ([
-            ...prev,
-            {
-                id: user.id,
-                username: user.username,
-                password: user.password
-            }
-        ]))
+        dispatch({
+            type: "register", 
+            payload: { id: Date.now(), user }
+        })
 
         navi("/login")
     }
@@ -41,7 +39,6 @@ const RegisteForm = ({ setUsers }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <Title>회원등록</Title>
-
             <Card>
                 <Input
                     type="text"
@@ -50,7 +47,6 @@ const RegisteForm = ({ setUsers }) => {
                     onChange={handleChange}
                     placeholder="사용자이름"
                 />
-
                 <Input
                     type="password"
                     name="password"
@@ -58,7 +54,6 @@ const RegisteForm = ({ setUsers }) => {
                     onChange={handleChange}
                     placeholder="비밀번호"
                 />
-
                 <Input
                     type="password"
                     name="confirmPassword"
@@ -66,7 +61,6 @@ const RegisteForm = ({ setUsers }) => {
                     onChange={handleChange}
                     placeholder="비밀번호 확인"
                 />
-
                 <RegisterButton type="submit">등록</RegisterButton>
                 <LoginButton type="button" onClick={() => navi("/login")}>
                     이미 회원이신가요? 로그인
@@ -81,12 +75,10 @@ export default RegisteForm
 const Form = styled.form`
   width: 100%;
   height: 100vh;
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   background: #f1f5f9;
 `
 const Title = styled.h2`
@@ -101,7 +93,6 @@ const Card = styled.div`
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-
   display: flex;
   flex-direction: column;
 `
@@ -112,7 +103,6 @@ const Input = styled.input`
   border: 1px solid #dbe4ee;
   font-size: 16px;
   outline: none;
-
   transition: 0.2s;
   &:focus {
     border-color: #3b82f6;
@@ -133,16 +123,13 @@ const RegisterButton = styled(BaseButton)`
   background: #3b82f6;
   color: white;
   margin-bottom: 12px;
-
   &:hover {
     background: #2563eb;
   }
 `
-
 const LoginButton = styled(BaseButton)`
   background: transparent;
   color: #3b82f6;
-
   &:hover {
     background: #eff6ff;
   }

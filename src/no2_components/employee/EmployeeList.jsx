@@ -1,39 +1,25 @@
-import React from 'react'
-import styled from 'styled-components'
+// EmployeeList.jsx
+import React, { useContext } from 'react'
+import { EmployeeContext } from '../../no0_context/EmployeeContext'
 
-const EmployeeList = ({ state, dispatch }) => {
-  const { empTable } = state;
-  const handleClick = (id) => {
-    dispatch({type:"select", payload:id})
+const EmployeeList = () => {
+  const {state, dispatch} = useContext(EmployeeContext);
+  const {empTable} = state;
+
+  const handleClick=(id)=>{
+    dispatch({type:"select",payload: id})
   }
+
   return (
-    <ListBox>
-      {empTable.map(item => (
-        <UserButton key={item.id} onClick={() => handleClick(item.id)}>
-          {item.name}
-        </UserButton>
+    <div>
+      {
+      empTable?.map(item=>(
+        <button key={item.id} onClick={()=>handleClick(item.id)}>
+            {item.name}
+        </button>
       ))}
-    </ListBox>
+    </div>
   )
 }
 
-const ListBox = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-`
-
-const UserButton = styled.button`
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  background: #e2e8f0;
-  cursor: pointer;
-  transition: 0.2s;
-
-  &:hover{
-    background: #cbd5e1;
-  }
-`
 export default EmployeeList
