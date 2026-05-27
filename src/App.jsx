@@ -2,9 +2,9 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
-import HomePage from './no1_pages/HomePage'
-import TodoPage from './no1_pages/TodoPage'
-import EmployeePage from './no1_pages/EmployeePage'
+import HomePage from './no1_pages/employee/HomePage.jsx'
+import TodoPage from './no1_pages/todo/TodoPage.jsx'
+import EmployeePage from './no1_pages/employee/EmployeePage.jsx'
 
 import HeaderBar from './no2_components/layout/HeaderBar'
 import SiderBar from './no2_components/layout/SiderBar'

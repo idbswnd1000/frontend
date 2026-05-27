@@ -14,6 +14,7 @@ node_moduels 다시 설치 : npm install
 server 띄우기 : npm run dev
 router : npm install react-router-dom
 CSS(style) : npm install styled-components
+아이콘 : npm install react-icons
 
 reducer
 dispatch : 함수를 실행하는 함수

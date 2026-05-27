@@ -1,10 +1,10 @@
 // EmployeePage.jsx
 import React, { useEffect, useContext } from 'react'
-import EmployeeList from '../no2_components/employee/EmployeeList'
-import EmployeeTable from '../no2_components/employee/EmployeeTable'
-import EmployeeRegister from '../no2_components/employee/EmployeeRegister'
-import EmployeeUpdate from '../no2_components/employee/EmployeeUpdate'
-import { EmployeeContext } from '../no0_context/EmployeeContext'
+import EmployeeList from '../../no2_components/employee/EmployeeList'
+import EmployeeTable from '../../no2_components/employee/EmployeeTable'
+import EmployeeRegister from '../../no2_components/employee/EmployeeRegister'
+import EmployeeUpdate from '../../no2_components/employee/EmployeeUpdate'
+import { EmployeeContext } from '../../no0_context/EmployeeContext'
 
 const EmployeePage = () => {
   const {state, dispatch} = useContext(EmployeeContext);
